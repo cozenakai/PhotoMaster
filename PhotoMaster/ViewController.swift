@@ -18,6 +18,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     
+    func presentPickerController(sourceType: UIImagePickerController.SourceType){
+           if UIImagePickerController.isSourceTypeAvailable(sourceType){
+               let picker = UIImagePickerController()
+               picker.sourceType = sourceType
+               picker.delegate = self
+               self.present(picker, animated: true, completion: nil)
+           }
+       }
+       
+    func imagePickerController(_ picker: UIImagePickerController,didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+           self.dismiss(animated: true, completion: nil)
+           
+           photoImageView.image = info[.originalImage]as? UIImage
+       }
+    
+    
     @IBAction func onTappedCameraButton(){
         presentPickerController(sourceType: .camera)
         
@@ -29,48 +45,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     
-    @IBAction func onTappedTextButton(){
-        if photoImageView.image != nil {
-                   photoImageView.image = drawText(image: photoImageView.image!)
-               }else{
-                   print("画像がありません")
-                }
-    }
-    
-    @IBAction func onTappedIllustButton(){
-        if photoImageView.image != nil {
-                   photoImageView.image = drawText(image: photoImageView.image!)
-               }else{
-                   print("画像がありません")
-                }
-    }
-    
-     @IBAction func onTappedUploadButton(){
-            if photoImageView.image != nil {
-                let activityVC = UIActivityViewController(activityItems: [photoImageView.image!,"#PhotoMaster"],
-                                                          applicationActivities: nil)
-            }else{
-                print("画像がありません")
-            }
-        }
-    func presentPickerController(sourceType: UIImagePickerController.SourceType){
-        if UIImagePickerController.isSourceTypeAvailable(sourceType){
-            let picker = UIImagePickerController()
-            picker.sourceType = sourceType
-            picker.delegate = self
-            self.present(picker, animated: true, completion: nil)
-        }
-    }
-    
-    func imagePickerController(_picker: UIImagePickerController,didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
-    self.dismiss(animated: true, completion: nil)
-        
-        photoImageView.image = info[.originalImage]as? UIImage
-    }
-    
     func drawText(image: UIImage)->UIImage{
         
-        let text = "LifeisTech!"
+        let text = "Life is Tech!"
         
         let textFontAttributes = [
             NSAttributedString.Key.font: UIFont(name: "Arial", size: 120)!,
@@ -114,5 +91,31 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         return newImage!
     }
     
+    @IBAction func onTappedTextButton(){
+         if photoImageView.image != nil {
+                    photoImageView.image = drawText(image: photoImageView.image!)
+                }else{
+                    print("画像がありません")
+                 }
+     }
+     
+     @IBAction func onTappedIllustButton(){
+         if photoImageView.image != nil {
+                photoImageView.image = drawMaskImage(image: photoImageView.image!)
+                }else{
+                    print("画像がありません")
+                 }
+     }
+     
+      @IBAction func onTappedUploadButton(){
+             if photoImageView.image != nil {
+                 let activityVC = UIActivityViewController(activityItems: [photoImageView.image!,"#PhotoMaster"],
+                                                           applicationActivities: nil)
+                self.present(activityVC, animated: true, completion: nil)
+             }else{
+                 print("画像がありません")
+             }
+         }
+     
 }
 
