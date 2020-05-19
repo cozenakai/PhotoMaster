@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     @IBOutlet var photoImageView: UIImageView!
 
@@ -16,24 +16,43 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+    
+    
     @IBAction func onTappedCameraButton(){
-//        presentPickerController(sourceType: .camera)
-        if photoImageView.image != nil {
-            photoImageView.image = drawText(image: photoImageView.image!)
-        }else{
-            print("画像がありません")
-        }
+        presentPickerController(sourceType: .camera)
+        
     }
+    
     
     @IBAction func onTappedAlbumButton(){
-//        presentPickerController(sourceType: .photoLibrary)
-        if photoImageView.image != nil {
-            photoImageView.image = drawMaskImage(image: photoImageView.image!)
-        }else{
-            print("画像がありません")
-        }
+        presentPickerController(sourceType: .photoLibrary)
     }
     
+    
+    @IBAction func onTappedTextButton(){
+        if photoImageView.image != nil {
+                   photoImageView.image = drawText(image: photoImageView.image!)
+               }else{
+                   print("画像がありません")
+                }
+    }
+    
+    @IBAction func onTappedIllustButton(){
+        if photoImageView.image != nil {
+                   photoImageView.image = drawText(image: photoImageView.image!)
+               }else{
+                   print("画像がありません")
+                }
+    }
+    
+     @IBAction func onTappedUploadButton(){
+            if photoImageView.image != nil {
+                let activityVC = UIActivityViewController(activityItems: [photoImageView.image!,"#PhotoMaster"],
+                                                          applicationActivities: nil)
+            }else{
+                print("画像がありません")
+            }
+        }
     func presentPickerController(sourceType: UIImagePickerController.SourceType){
         if UIImagePickerController.isSourceTypeAvailable(sourceType){
             let picker = UIImagePickerController()
